@@ -1,16 +1,63 @@
 ---
+import Button from "@/components/Button.astro";
+import CardBlogPost from "@/components/CardBlogPost.astro";
+import Wrapper from "@/components/Wrapper.astro";
+import MainLayout from "@/layout/MainLayout.astro";
+import { getAllTags, getFilterPostByTag } from "@/utils/ColecctionUtils";
 
+// const BlogPost = await getOrderedBlogPosts();
+const { tags, orderPostDate } = await getAllTags();
+
+const recentPosts = orderPostDate.slice(0, 4);
+
+const allPosts = orderPostDate.slice(4);
+const filteredPostsByTag = getFilterPostByTag(tags, allPosts);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout titulo="blog" descripction="xd">
+  <Wrapper>
+    <br />
+    <h1>Post Recientes</h1>
+    <br />
+    <div class="blog-container">
+      {recentPosts.map((post) => <CardBlogPost post={post} />)}
+    </div>
+    <br />
+    <br />
+    <h1>Todos los post</h1>
+    {
+    filteredPostsByTag.map(({ tag , posts}) =>( 
+      <br />
+      <h2>{tag}</h2>
+      <br />
+      <div class="blog-container--all">
+      {
+        posts.map((post)=> (
+        <CardBlogPost post={post} />
+        ))
+      }
+      </div>
+      <br />
+      <Button as="a" href={`/posts/${tag}/1`}>Todos los articulos</Button>
+    ))
+    }
+    <br />
+    
+  </Wrapper>
+</MainLayout>
+
+<style lang="scss">
+  .blog-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    container: cardBlog/inline-size;
+  }
+
+  .blog-container--all {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    container: cardBlogPaginate/inline-size;
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { data, slug } = Astro.props.post;
+const { image, description, author, title, date, tags } = data;
+const datetime = new Date(date).toISOString();
+
+const formatDate = date.toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'short',
+  day: '2-digit',
+});
+
+const [day, month, year] = formatDate.split(' ');
+const formattedDate = `${day} ${month.charAt(0).toUpperCase() + month.slice(1)} ${year}`;
+---
+
+<article class="cardBlog">
+  <a href=`/posts/${slug}`>
+    <img class="cardBlog__img" src={image} alt={title} />
+  </a>
+  <div class="cardBlog__content">
+    <header class="cardBlog__header">
+      <span>{author}<time {datetime}> • {formattedDate}</time></span>
+    </header>
+    <h3 class="cardBlog__title">{title}</h3>
+    <p class="cardBlog__description">{description}</p>
+    <footer class="cardBlog__footer">
+      <ul>
+        {tags && tags.map((tag) => <li class="cardBlog__tag">{tag}</li>)}
+      </ul>
+    </footer>
+    <!-- <a href=`/posts/${slug}`>leer mas</a> -->
+  </div>
+</article>
+
+<style lang="scss">
+  .cardBlog {
+    background-color: #19258f80;
+    display: grid;
+    grid-template-columns: 32% 1fr;
+    container-type: inline-size;
+    grid-column: span 4;
+    border-radius: 0.4rem;
+    overflow: hidden;
+
+    &__title {
+      font-size: var(--fs-normal);
+    }
+
+    &__content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    &__author {
+      font-size: var(--fs-smallx);
+    }
+
+    &__description {
+      font-size: var(--fs-small);
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+    }
+
+    &__img {
+      min-height: 100%;
+      aspect-ratio: 16/9;
+    }
+
+    &__header,
+    &__footer {
+      display: flex;
+      font-size: var(--fs-smallx);
+    }
+
+    &__footer {
+      margin-top: auto;
+
+      > ul {
+        margin-top: 1rem;
+      }
+    }
+
+    &__tag {
+      padding: 0.2rem 1rem;
+      outline: 1.8px solid white;
+      border-radius: 100vh;
+    }
+
+    &:first-child {
+      @container cardBlog (width >= 1024px) {
+        grid-column: span 2;
+        grid-row: span 3;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+      }
+    }
+
+    @container cardBlog (width >= 1024px) {
+      grid-column: span 2;
+    }
+
+    @container cardBlogPaginate (width >= 1024px) {
+      grid-column: span 1;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+    }
+  }
+</style>

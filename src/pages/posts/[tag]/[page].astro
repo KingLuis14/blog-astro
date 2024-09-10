@@ -1,0 +1,82 @@
+---
+import CardBlogPost from '@/components/CardBlogPost.astro';
+import Wrapper from '@/components/Wrapper.astro';
+import MainLayout from '@/layout/MainLayout.astro';
+import type { GetStaticPaths } from 'astro';
+import { getAllTags } from '@/utils/ColecctionUtils';
+import Button from '@/components/Button.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const { tags, orderPostDate } = await getAllTags();
+
+  return tags.flatMap((tag) => {
+    const filteredPosts = orderPostDate.filter((post) => post.data.tags.includes(tag));
+
+    return paginate(filteredPosts, { params: { tag }, pageSize: 4 });
+  });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { tag } = Astro.params;
+const dotsPaginate = Array.from({ length: page.lastPage }, (_, index) => index + 1);
+---
+
+<MainLayout titulo="blog" descripction="xd">
+  <Wrapper>
+    <br />
+    <Button as="a" href="/">Volver al Inicio</Button>
+    <br />
+    <h1>Pagina {page.currentPage}</h1>
+    <br />
+    <div class="blog-container">
+      {page.data.map((post) => <CardBlogPost post={post} />)}
+    </div>
+    <br />
+    <footer class="pagination">
+      <Button as="a" href={page.url.prev} theme={page.url.prev ? 'normal' : 'disable'}>Anterior</Button>
+      <div>
+        <ul class="pagination__list">
+          {
+            dotsPaginate.map((dot) => (
+              <li>
+                <a class:list={['pagination__dot', { active: dot === page.currentPage }]} href={`/posts/${tag}/${dot}`}>
+                  {dot}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <Button as="a" href={page.url.next} theme={page.url.next ? 'normal' : 'disable'}>Siguiente</Button>
+    </footer>
+    <br />
+  </Wrapper>
+</MainLayout>
+
+<style lang="scss">
+  .blog-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    container: cardBlogPaginate/inline-size;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__list {
+      display: flex;
+      gap: 1rem;
+    }
+
+    &__dot {
+      padding: 0.2rem 0.5rem;
+      &.active {
+        background-color: white;
+        color: black;
+      }
+    }
+  }
+</style>

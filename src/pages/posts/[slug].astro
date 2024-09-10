@@ -1,0 +1,36 @@
+---
+import MainLayout from "@/layout/MainLayout.astro";
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+
+export const getStaticPaths = (async () => {
+  const blogPost = await getCollection("blog");
+
+  return blogPost.map((post) => ({
+    params: { slug: post.slug },
+    props: { post: post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { data, render } = Astro.props.post;
+const { image, description, title } = data;
+
+const { Content, headings } = await render();
+---
+
+<MainLayout titulo={title} descripction={description} imagen={image}>
+  <ol>
+    {
+      headings
+        .filter(({ text }) => text && !text.toLowerCase().includes("ejemplo"))
+        .map(({ slug, text }, index) => (
+          <li>
+            <a href={`#${slug}`}>
+              {index + 1}- {text}
+            </a>
+          </li>
+        ))
+    }
+  </ol>
+  <Content />
+</MainLayout>
