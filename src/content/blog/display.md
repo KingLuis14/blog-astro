@@ -2,7 +2,7 @@
 title: "Display css"
 description: "Crean una nueva linea para cada elemento"
 image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJk_Vvldw3r1vAKBwOPUM5VbmWPNwHB7NBDg&s"
-tags: ['css']
+tags: ['css', 'html']
 date: 2024-08-17
 author: "Enrique calero"
 ---

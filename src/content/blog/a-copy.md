@@ -1,9 +1,9 @@
 ---
-title: "selector etiqueta"
-description: "Como su mismo nombre indica, un selector CSS es una referencia a uno o varios elementos HTML, escrito generalmente desde código CSS (también pueden utilizarse desde ciertos lugares en Javascript). Es una forma rápida y cómoda de hacer referencia a elementos individuales o grupos de elementos, para posteriormente darles estilo."
-image: "https://miro.medium.com/v2/resize:fit:1100/1*f2i47G95nVCx71KzM1iXlg.png"
+title: "La etiqueta <a>"
+description: "El elemento <a> es uno más importantes de HTML si no es la que más, ya que nos permite realizar referencias a otras páginas web o recursos como documentos, imágenes, videos, etc. Estas referencias se suelen denominar enlaces, vínculos o hipervínculos. Para ello, tenemos que indicar la URL de la dirección del recurso a enlazar y el texto o contenido que vamos a convertir en enlazable."
+image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS14vZrilwBE30NGU6YGLygbQEJnSITREUV6w&s"
 tags: ['html']
-date: 2024-06-12
+date: 2024-08-12
 author: "Enrique calero"
 ---
 

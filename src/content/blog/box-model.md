@@ -2,7 +2,7 @@
 title: "El Box Model"
 description: "El modelo de caja de CSS es un concepto fundamental que describe cómo se estructuran y se renderizan los elementos en una página web. Cada elemento se representa como una caja rectangular, y el modelo de caja proporciona un marco para entender y manipular estas cajas."
 image: "https://blog.stackfindover.com/wp-content/uploads/2021/11/responsive-HTML-Footer.jpg"
-tags: ['css']
+tags: ['css', 'javascript']
 date: 2024-05-19
 author: "Enrique calero"
 ---

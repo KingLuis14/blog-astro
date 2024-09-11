@@ -2,11 +2,10 @@
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  tagActive: CollectionEntry<'blog'>['data']['tags'][number];
   post: CollectionEntry<'blog'>;
 }
 
-const { post, tagActive } = Astro.props;
+const { post } = Astro.props;
 const { data, slug } = post;
 const { image, description, author, title, date, tags } = data;
 const datetime = new Date(date).toISOString();
@@ -22,7 +21,7 @@ const formattedDate = `${day} ${month.charAt(0).toUpperCase() + month.slice(1)} 
 ---
 
 <article class="cardBlog">
-  <a href={`/${tagActive}/${slug}`}>
+  <a href={`/post/${slug}`}>
     <img class="cardBlog__img" src={image} alt={title} />
   </a>
   <div class="cardBlog__content">
@@ -37,7 +36,7 @@ const formattedDate = `${day} ${month.charAt(0).toUpperCase() + month.slice(1)} 
           tags &&
             tags.map((tag) => (
               <li>
-                <a class="cardBlog__tag" href={`/${tag}/1`}>
+                <a class="cardBlog__tag" href={`/${tag}/`}>
                   {tag}
                 </a>
               </li>
@@ -86,11 +85,14 @@ const formattedDate = `${day} ${month.charAt(0).toUpperCase() + month.slice(1)} 
     &__img {
       min-height: 100%;
       aspect-ratio: 16/9;
+
+      @container cardBlogRecent (width <= 768px) {
+        max-height: 100%;
+      }
     }
 
     &__header,
     &__footer {
-      display: flex;
       font-size: var(--fs-smallx);
     }
 
@@ -99,17 +101,25 @@ const formattedDate = `${day} ${month.charAt(0).toUpperCase() + month.slice(1)} 
 
       > ul {
         margin-top: 1rem;
+        display: flex;
+        gap: 0.7rem;
       }
     }
 
     &__tag {
-      padding: 0.2rem 1rem;
+      padding: 0.15em 1em;
       outline: 1.8px solid white;
       border-radius: 100vh;
     }
 
     &:first-child {
-      @container cardBlog (width >= 1024px) {
+      // grid-column: span 4;
+      @container cardBlogRecent (width <= 768px) {
+        grid-column: span 4;
+        grid-template-columns: 1fr;
+        grid-template-rows: 45vmin auto;
+      }
+      @container cardBlogRecent (width >= 1024px) {
         grid-column: span 2;
         grid-row: span 3;
         grid-template-columns: 1fr;
@@ -117,7 +127,7 @@ const formattedDate = `${day} ${month.charAt(0).toUpperCase() + month.slice(1)} 
       }
     }
 
-    @container cardBlog (width >= 1024px) {
+    @container cardBlogRecent (width >= 1024px) {
       grid-column: span 2;
     }
 

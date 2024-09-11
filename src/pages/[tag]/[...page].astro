@@ -30,7 +30,7 @@ const dotsPaginate = Array.from({ length: page.lastPage }, (_, index) => index +
     <h1>Pagina {page.currentPage}</h1>
     <br />
     <div class="blog-container">
-      {page.data.map((post) => <CardBlogPost post={post} tagActive={tag} />)}
+      {page.data.map((post) => <CardBlogPost post={post} />)}
     </div>
     <br />
     <footer class="pagination">
@@ -40,7 +40,10 @@ const dotsPaginate = Array.from({ length: page.lastPage }, (_, index) => index +
           {
             dotsPaginate.map((dot) => (
               <li>
-                <a class:list={['pagination__dot', { active: dot === page.currentPage }]} href={`/${tag}/${dot}`}>
+                <a
+                  class:list={['pagination__dot', { active: dot === page.currentPage }]}
+                  href={dot === 1 ? `/${tag}/` : `/${tag}/${dot}`}
+                >
                   {dot}
                 </a>
               </li>

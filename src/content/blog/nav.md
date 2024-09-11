@@ -1,7 +1,7 @@
 ---
 title: "La etiqueta <nav>"
 description: "El elemento `<nav>` nos permite crear una sección que agrupe los enlaces de navegación por la página, es decir, una especie de `<div>` contenedor orientado a desplazarse por los diferentes lugares del sitio web."
-image: "https://miro.medium.com/v2/resize:fit:1100/1*f2i47G95nVCx71KzM1iXlg.png"
+image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQgO3cX98D72sUn3zF30mlQeax2IOt96NLEg&s"
 tags: ['html']
 date: 2024-08-10
 author: "Enrique calero"

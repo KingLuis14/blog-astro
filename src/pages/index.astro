@@ -10,23 +10,7 @@ const orderPostDate = await getOrderedBlogPosts();
 
 const recentPosts = orderPostDate.slice(0, 4);
 
-const filteredPostsByTagRecent = TAGS.flatMap((tag) => {
-  const filterTagPost = recentPosts.filter((post) => post.data.tags.includes(tag));
- return filterTagPost.map((post) => ({
-      tag , 
-      post
-    }
- ))
-});
-
 const allPosts = orderPostDate.slice(4);
-
-const filteredPostsByTag = TAGS.map((tag) => {
-  const filterTagPost = allPosts.filter((post) => post.data.tags.includes(tag));
-  return { tag , posts: filterTagPost}
-}).filter(({ posts }) => posts.length > 0);
-
-
 ---
 
 <MainLayout titulo="blog" descripction="xd">
@@ -35,29 +19,15 @@ const filteredPostsByTag = TAGS.map((tag) => {
     <h1>Post Recientes</h1>
     <br />
     <div class="blog-container">
-      {
-       filteredPostsByTagRecent && filteredPostsByTagRecent.map(({tag , post}) => <CardBlogPost post={post} tagActive={tag} />)}
+      {recentPosts && recentPosts.map((post) => <CardBlogPost post={post} />)}
     </div>
     <br />
     <br />
     <h1>Todos los post</h1>
-    {
-    filteredPostsByTag && filteredPostsByTag.map(({ tag , posts}) =>( 
-      <br />
-      <h2>{tag}</h2>
-      <br />
-      <div class="blog-container--all">
-      {
-        posts.map((post)=> (
-        <CardBlogPost post={post} tagActive={tag} />
-        ))
-      }
-      </div>
-      <br />
-      <Button as="a" href={`/${tag}/1`}>Todos los articulos</Button>
-      <br />
-    ))
-    }
+    <br />
+    <div class="blog-container--all">
+      {allPosts && allPosts.map((post) => <CardBlogPost post={post} />)}
+    </div>
     <br />
   </Wrapper>
 </MainLayout>
@@ -67,7 +37,7 @@ const filteredPostsByTag = TAGS.map((tag) => {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-    container: cardBlog/inline-size;
+    container: cardBlogRecent/inline-size;
   }
 
   .blog-container--all {
