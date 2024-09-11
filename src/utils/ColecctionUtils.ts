@@ -27,32 +27,34 @@ export const getAllTags = async () => {
 
   return { tags, orderPostDate };
 };
-export const getFilterPostByTag = (
-  tags: string[],
-  blogPosts: CollectionEntry<"blog">[],
-): TagWithPosts[] => {
-  return tags
-    .map((tag) => {
-      const postsByTag = blogPosts.filter((post) =>
-        post.data.tags.includes(tag),
-      );
-      return { tag, posts: postsByTag };
-    })
-    .sort((a, b) => {
-      // Ordena las etiquetas según el orden definido en tagOrder
-      const indexA = tagOrder.indexOf(a.tag);
-      const indexB = tagOrder.indexOf(b.tag);
 
-      // Si ambos están en el tagOrder, ordena según ese índice
-      if (indexA !== -1 && indexB !== -1) {
-        return indexA - indexB;
-      }
 
-      // Si solo uno de ellos está en el tagOrder, darle prioridad
-      if (indexA !== -1) return -1;
-      if (indexB !== -1) return 1;
+// export const getFilterPostByTag = (
+//   tags: string[],
+//   blogPosts: CollectionEntry<"blog">[],
+// ): TagWithPosts[] => {
+//   return tags
+//     .map((tag) => {
+//       const postsByTag = blogPosts.filter((post) =>
+//         post.data.tags.includes(tag),
+//       );
+//       return { tag, posts: postsByTag };
+//     })
+//     .sort((a, b) => {
+//       // Ordena las etiquetas según el orden definido en tagOrder
+//       const indexA = tagOrder.indexOf(a.tag);
+//       const indexB = tagOrder.indexOf(b.tag);
 
-      // Si ninguno está en el tagOrder, mantener el orden original
-      return 0;
-    });
-};
+//       // Si ambos están en el tagOrder, ordena según ese índice
+//       if (indexA !== -1 && indexB !== -1) {
+//         return indexA - indexB;
+//       }
+
+//       // Si solo uno de ellos está en el tagOrder, darle prioridad
+//       if (indexA !== -1) return -1;
+//       if (indexB !== -1) return 1;
+
+//       // Si ninguno está en el tagOrder, mantener el orden original
+//       return 0;
+//     });
+// };

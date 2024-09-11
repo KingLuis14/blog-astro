@@ -2,10 +2,12 @@
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
+  tagActive: CollectionEntry<'blog'>['data']['tags'][number];
   post: CollectionEntry<'blog'>;
 }
 
-const { data, slug } = Astro.props.post;
+const { post, tagActive } = Astro.props;
+const { data, slug } = post;
 const { image, description, author, title, date, tags } = data;
 const datetime = new Date(date).toISOString();
 
@@ -20,7 +22,7 @@ const formattedDate = `${day} ${month.charAt(0).toUpperCase() + month.slice(1)} 
 ---
 
 <article class="cardBlog">
-  <a href=`/posts/${slug}`>
+  <a href={`/${tagActive}/${slug}`}>
     <img class="cardBlog__img" src={image} alt={title} />
   </a>
   <div class="cardBlog__content">
@@ -31,7 +33,16 @@ const formattedDate = `${day} ${month.charAt(0).toUpperCase() + month.slice(1)} 
     <p class="cardBlog__description">{description}</p>
     <footer class="cardBlog__footer">
       <ul>
-        {tags && tags.map((tag) => <li class="cardBlog__tag">{tag}</li>)}
+        {
+          tags &&
+            tags.map((tag) => (
+              <li>
+                <a class="cardBlog__tag" href={`/${tag}/1`}>
+                  {tag}
+                </a>
+              </li>
+            ))
+        }
       </ul>
     </footer>
     <!-- <a href=`/posts/${slug}`>leer mas</a> -->

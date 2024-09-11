@@ -1,17 +1,32 @@
 ---
-import Button from "@/components/Button.astro";
-import CardBlogPost from "@/components/CardBlogPost.astro";
-import Wrapper from "@/components/Wrapper.astro";
-import MainLayout from "@/layout/MainLayout.astro";
-import { getAllTags, getFilterPostByTag } from "@/utils/ColecctionUtils";
+import Button from '@/components/Button.astro';
+import CardBlogPost from '@/components/CardBlogPost.astro';
+import Wrapper from '@/components/Wrapper.astro';
+import { TAGS } from '@/content/config';
+import MainLayout from '@/layout/MainLayout.astro';
+import { getOrderedBlogPosts } from '@/utils/ColecctionUtils';
 
-// const BlogPost = await getOrderedBlogPosts();
-const { tags, orderPostDate } = await getAllTags();
+const orderPostDate = await getOrderedBlogPosts();
 
 const recentPosts = orderPostDate.slice(0, 4);
 
+const filteredPostsByTagRecent = TAGS.flatMap((tag) => {
+  const filterTagPost = recentPosts.filter((post) => post.data.tags.includes(tag));
+ return filterTagPost.map((post) => ({
+      tag , 
+      post
+    }
+ ))
+});
+
 const allPosts = orderPostDate.slice(4);
-const filteredPostsByTag = getFilterPostByTag(tags, allPosts);
+
+const filteredPostsByTag = TAGS.map((tag) => {
+  const filterTagPost = allPosts.filter((post) => post.data.tags.includes(tag));
+  return { tag , posts: filterTagPost}
+}).filter(({ posts }) => posts.length > 0);
+
+
 ---
 
 <MainLayout titulo="blog" descripction="xd">
@@ -20,29 +35,30 @@ const filteredPostsByTag = getFilterPostByTag(tags, allPosts);
     <h1>Post Recientes</h1>
     <br />
     <div class="blog-container">
-      {recentPosts.map((post) => <CardBlogPost post={post} />)}
+      {
+       filteredPostsByTagRecent && filteredPostsByTagRecent.map(({tag , post}) => <CardBlogPost post={post} tagActive={tag} />)}
     </div>
     <br />
     <br />
     <h1>Todos los post</h1>
     {
-    filteredPostsByTag.map(({ tag , posts}) =>( 
+    filteredPostsByTag && filteredPostsByTag.map(({ tag , posts}) =>( 
       <br />
       <h2>{tag}</h2>
       <br />
       <div class="blog-container--all">
       {
         posts.map((post)=> (
-        <CardBlogPost post={post} />
+        <CardBlogPost post={post} tagActive={tag} />
         ))
       }
       </div>
       <br />
-      <Button as="a" href={`/posts/${tag}/1`}>Todos los articulos</Button>
+      <Button as="a" href={`/${tag}/1`}>Todos los articulos</Button>
+      <br />
     ))
     }
     <br />
-    
   </Wrapper>
 </MainLayout>
 
