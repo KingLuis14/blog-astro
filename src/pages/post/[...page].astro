@@ -3,17 +3,13 @@ import CardBlogPost from '@/components/CardBlogPost.astro';
 import Wrapper from '@/components/Wrapper.astro';
 import MainLayout from '@/layout/MainLayout.astro';
 import type { GetStaticPaths } from 'astro';
-import { getAllTags } from '@/utils/ColecctionUtils';
+import { getAllTags, getOrderedBlogPosts } from '@/utils/ColecctionUtils';
 import Button from '@/components/Button.astro';
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const { tags, orderPostDate } = await getAllTags();
+  const orderPostDate = await getOrderedBlogPosts();
 
-  return tags.flatMap((tag) => {
-    const filteredPosts = orderPostDate.filter((post) => post.data.tags.includes(tag));
-
-    return paginate(filteredPosts, { params: { tag }, pageSize: 6 });
-  });
+  return paginate(orderPostDate, { pageSize: 9 });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
@@ -24,10 +20,10 @@ const dotsPaginate = Array.from({ length: page.lastPage }, (_, index) => index +
 <MainLayout titulo="blog" descripction="xd">
   <Wrapper>
     <br />
-    <Button as="a" href="/post/">Volver</Button>
+    <Button as="a" href="/">Volver al Inicio</Button>
     <br />
     <br />
-    <h1>Posts de {tag}</h1>
+    <h1>Todos los posts</h1>
     <br />
     <div class="blog-container">
       {page.data.map((post) => <CardBlogPost post={post} />)}
@@ -42,7 +38,7 @@ const dotsPaginate = Array.from({ length: page.lastPage }, (_, index) => index +
               <li>
                 <a
                   class:list={['pagination__dot', { active: dot === page.currentPage }]}
-                  href={dot === 1 ? `/${tag}/` : `/${tag}/${dot}`}
+                  href={dot === 1 ? `/post/` : `/post/${dot}`}
                 >
                   {dot}
                 </a>

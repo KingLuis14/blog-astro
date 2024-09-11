@@ -29,6 +29,8 @@ const allPosts = orderPostDate.slice(4);
       {allPosts && allPosts.map((post) => <CardBlogPost post={post} />)}
     </div>
     <br />
+    <Button as="a" href="/post/">Ver todos los post</Button>
+    <br />
   </Wrapper>
 </MainLayout>
 
@@ -42,7 +44,7 @@ const allPosts = orderPostDate.slice(4);
 
   .blog-container--all {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 1rem;
     container: cardBlogPaginate/inline-size;
   }

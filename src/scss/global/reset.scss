@@ -9,6 +9,19 @@
   margin: 0;
 }
 
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	
+	background-color: var(--color-blue-500);
+}
+::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: var(--color-blue-950);
+}
+
+
 body {
   font-family: "Inter", system-ui;
   line-height: 1.6;
